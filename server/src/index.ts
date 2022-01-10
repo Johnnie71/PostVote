@@ -11,6 +11,7 @@ import { UserResolver } from "./resolvers/user";
 import { MyContext } from "./resolvers/types";
 import session from "express-session";
 import connectRedis from "connect-redis";
+import cors from "cors";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 const redis = require("redis");
@@ -23,6 +24,12 @@ const main = async () => {
 
 	const RedisStore = connectRedis(session);
 	const redisClient = redis.createClient();
+	app.use(
+		cors({
+			origin: "http://localhost:3000",
+			credentials: true,
+		})
+	);
 
 	app.use(
 		session({
@@ -56,7 +63,7 @@ const main = async () => {
 	await apolloServer.start();
 	apolloServer.applyMiddleware({
 		app,
-		cors: { origin: "http://localhost:3000" },
+		cors: false,
 	});
 
 	app.get("/", (_, res) => {
