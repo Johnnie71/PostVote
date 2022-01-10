@@ -18,6 +18,7 @@ const Register: React.FC<registerProps> = ({}) => {
 					console.log(values);
 					const response = await register(values);
 					if (response.data?.register.errors) {
+						[{ field: "username", message: "something wrong!" }];
 						setErrors({
 							username: "Hey im an error!",
 						});
