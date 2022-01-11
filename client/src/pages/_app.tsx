@@ -2,13 +2,13 @@ import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 
 import theme from "../theme";
 import { Provider, createClient, dedupExchange, fetchExchange } from "urql";
+import { Cache, cacheExchange, QueryInput } from "@urql/exchange-graphcache";
 import {
-	Cache,
-	cacheExchange,
-	query,
-	QueryInput,
-} from "@urql/exchange-graphcache";
-import { LoginMutation, MeDocument, MeQuery } from "../generated/graphql";
+	LoginMutation,
+	MeDocument,
+	MeQuery,
+	RegisterMutation,
+} from "../generated/graphql";
 
 function betterUpdateQuery<Result, Query>(
 	cache: Cache,
@@ -40,6 +40,22 @@ const client = createClient({
 								} else {
 									return {
 										me: result.login.user,
+									};
+								}
+							}
+						);
+					},
+					register: (_result, args, cache, info) => {
+						betterUpdateQuery<RegisterMutation, MeQuery>(
+							cache,
+							{ query: MeDocument },
+							_result,
+							(result, query) => {
+								if (result.register.errors) {
+									return query;
+								} else {
+									return {
+										me: result.register.user,
 									};
 								}
 							}
