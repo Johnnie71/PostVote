@@ -6,7 +6,7 @@ import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 interface NavBarProps {}
 
 export const NavBar: React.FC<NavBarProps> = ({}) => {
-	const [, logout] = useLogoutMutation();
+	const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
 	const [{ data, fetching }] = useMeQuery();
 	let body = null;
 
@@ -35,6 +35,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 					onClick={() => {
 						logout();
 					}}
+					isLoading={logoutFetching}
 					variant="link"
 				>
 					Logout
