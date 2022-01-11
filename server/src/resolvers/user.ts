@@ -12,6 +12,7 @@ import {
 import { MyContext } from "./types";
 import argon2 from "argon2";
 import { EntityManager } from "@mikro-orm/postgresql";
+import { COOKIE_NAME } from "src/constants";
 
 @InputType()
 class UsernamePasswordInput {
@@ -153,16 +154,16 @@ export class UserResolver {
 
 	@Mutation(() => Boolean)
 	logout(@Ctx() { req, res }: MyContext) {
-		return new Promise((res) =>
+		return new Promise((resolve) =>
 			req.session.destroy((error) => {
-				res.clearCookie("QIIDDD");
+				res.clearCookie(COOKIE_NAME);
 				if (error) {
 					console.log(error);
-					res(false);
+					resolve(false);
 					return;
 				}
 
-				res(true);
+				resolve(true);
 			})
 		);
 	}
