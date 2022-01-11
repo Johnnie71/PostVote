@@ -150,4 +150,20 @@ export class UserResolver {
 			user,
 		};
 	}
+
+	@Mutation(() => Boolean)
+	logout(@Ctx() { req, res }: MyContext) {
+		return new Promise((res) =>
+			req.session.destroy((error) => {
+				res.clearCookie("QIIDDD");
+				if (error) {
+					console.log(error);
+					res(false);
+					return;
+				}
+
+				res(true);
+			})
+		);
+	}
 }
