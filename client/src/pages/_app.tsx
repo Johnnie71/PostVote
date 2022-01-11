@@ -2,7 +2,12 @@ import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 
 import theme from "../theme";
 import { Provider, createClient, dedupExchange, fetchExchange } from "urql";
-import { Cache, cacheExchange, query, QueryInput } from "@urql/exchange-graphcache";
+import {
+	Cache,
+	cacheExchange,
+	query,
+	QueryInput,
+} from "@urql/exchange-graphcache";
 import { LoginMutation, MeDocument, MeQuery } from "../generated/graphql";
 
 function betterUpdateQuery<Result, Query>(
@@ -11,7 +16,7 @@ function betterUpdateQuery<Result, Query>(
 	result: any,
 	fn: (r: Result, q: Query) => Query
 ) {
-	return cache.updateQuery(qi, data => fn(result, data as any) as any )
+	return cache.updateQuery(qi, (data) => fn(result, data as any) as any);
 }
 
 const client = createClient({
@@ -19,26 +24,32 @@ const client = createClient({
 	fetchOptions: {
 		credentials: "include",
 	},
-	exchanges: [dedupExchange, cacheExchange({
-		updates: {
-			Mutation: {
-				login: (_result, args, cache, info) => {
-					betterUpdateQuery<LoginMutation, MeQuery>(
-						cache, 
-						{query: MeDocument}, 
-						_result, 
-						(result, query) => {
-							if(result.login.errors) {
-								return query;
-							} else {
-								return {
-									me: result.login.user,
+	exchanges: [
+		dedupExchange,
+		cacheExchange({
+			updates: {
+				Mutation: {
+					login: (_result, args, cache, info) => {
+						betterUpdateQuery<LoginMutation, MeQuery>(
+							cache,
+							{ query: MeDocument },
+							_result,
+							(result, query) => {
+								if (result.login.errors) {
+									return query;
+								} else {
+									return {
+										me: result.login.user,
+									};
 								}
 							}
-					})
-			}
-		}
-	}), fetchExchange],
+						);
+					},
+				},
+			},
+		}),
+		fetchExchange,
+	],
 });
 
 function MyApp({ Component, pageProps }: any) {
