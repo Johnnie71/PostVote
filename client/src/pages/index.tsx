@@ -8,11 +8,13 @@ const Index = () => {
 			<NavBar />
 			<div>Hello World!</div>
 			<br />
-			{data
-				? data.posts.map((post) => {
-						<div key={post.id}>{post.title}</div>;
-				  })
-				: "Loading....."}
+			{data ? (
+				data.posts.map((post) => {
+					<div key={post.id}>{post.title}</div>;
+				})
+			) : (
+				<div>Loading.....</div>
+			)}
 		</div>
 	);
 };
