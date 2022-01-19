@@ -11,7 +11,7 @@ import {
 import { MyContext } from "./types";
 import argon2 from "argon2";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { COOKIE_NAME } from "../constants";
+import { COOKIE_NAME, FORGET_PASSWORD_PREFIX } from "../constants";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { validateRegister } from "../utils/vaidateRegister";
 import { sendEmail } from "../utils/sendEmail";
@@ -37,7 +37,10 @@ class UserResponse {
 @Resolver()
 export class UserResolver {
 	@Mutation(() => Boolean)
-	async forgotPassword(@Arg("email") email: string, @Ctx() { em }: MyContext) {
+	async forgotPassword(
+		@Arg("email") email: string,
+		@Ctx() { em, redis }: MyContext
+	) {
 		const user = await em.findOne(User, { email });
 		if (!user) {
 			// the email is not in the database
@@ -45,6 +48,13 @@ export class UserResolver {
 		}
 
 		const token = v4(); // generates unique random string for token
+
+		redis.set(
+			FORGET_PASSWORD_PREFIX + token,
+			user.id,
+			"ex",
+			1000 * 60 * 60 * 24 * 3
+		); // expires in 3 days
 
 		await sendEmail(
 			email,
