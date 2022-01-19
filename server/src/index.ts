@@ -9,12 +9,10 @@ import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
-import { MyContext } from "./resolvers/types";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from "cors";
-
-const redis = require("ioredis");
+import Redis from "ioredis";
 
 const main = async () => {
 	const orm = await MikroORM.init(microConfig);
@@ -23,7 +21,7 @@ const main = async () => {
 	const app = express();
 
 	const RedisStore = connectRedis(session);
-	const redisClient = redis();
+	const redis = new Redis();
 
 	app.use(
 		cors({
@@ -36,7 +34,7 @@ const main = async () => {
 		session({
 			name: COOKIE_NAME,
 			store: new RedisStore({
-				client: redisClient,
+				client: redis,
 				disableTTL: true,
 				disableTouch: true,
 			}),
@@ -57,7 +55,7 @@ const main = async () => {
 			resolvers: [HelloResolver, PostResolver, UserResolver],
 			validate: false,
 		}),
-		context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+		context: ({ req, res }) => ({ em: orm.em, req, res, redis }),
 		plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 	});
 
