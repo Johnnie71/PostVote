@@ -43,9 +43,11 @@ export class UserResolver {
 			return true;
 		}
 
+		const token = "skjdfmwneri23yrnqrajbf394@";
+
 		await sendEmail(
 			email,
-			'<a href="http://localhost:3000/change-password/">Reset Password</a>'
+			`<a href="http://localhost:3000/change-password/${token}">Reset Password</a>`
 		);
 
 		return true;
