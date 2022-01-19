@@ -49,7 +49,7 @@ export class UserResolver {
 
 		const token = v4(); // generates unique random string for token
 
-		redis.set(
+		await redis.set(
 			FORGET_PASSWORD_PREFIX + token,
 			user.id,
 			"ex",
