@@ -14,7 +14,7 @@ import { EntityManager } from "@mikro-orm/postgresql";
 import { COOKIE_NAME } from "../constants";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { validateRegister } from "../utils/vaidateRegister";
-import { sendEmail } from "src/utils/sendEmail";
+import { sendEmail } from "../utils/sendEmail";
 
 @ObjectType()
 class FieldError {

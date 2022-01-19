@@ -14,7 +14,7 @@ import session from "express-session";
 import connectRedis from "connect-redis";
 import cors from "cors";
 
-const redis = require("redis");
+const redis = require("ioredis");
 
 const main = async () => {
 	const orm = await MikroORM.init(microConfig);
@@ -23,7 +23,8 @@ const main = async () => {
 	const app = express();
 
 	const RedisStore = connectRedis(session);
-	const redisClient = redis.createClient();
+	const redisClient = redis();
+
 	app.use(
 		cors({
 			origin: "http://localhost:3000",
