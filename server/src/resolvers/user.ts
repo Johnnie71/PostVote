@@ -15,6 +15,7 @@ import { COOKIE_NAME } from "../constants";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { validateRegister } from "../utils/vaidateRegister";
 import { sendEmail } from "../utils/sendEmail";
+import { v4 } from "uuid";
 
 @ObjectType()
 class FieldError {
@@ -43,7 +44,7 @@ export class UserResolver {
 			return true;
 		}
 
-		const token = "skjdfmwneri23yrnqrajbf394@";
+		const token = v4(); // generates unique random string for token
 
 		await sendEmail(
 			email,
