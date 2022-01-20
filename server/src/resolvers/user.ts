@@ -36,6 +36,13 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+	@Mutation(() => UserResponse)
+	async changePassword(
+		@Arg("token") token: string,
+		@Arg("newPassword") newPassword: string,
+		@Ctx() {}: MyContext
+	) {}
+
 	@Mutation(() => Boolean)
 	async forgotPassword(
 		@Arg("email") email: string,
