@@ -40,7 +40,7 @@ export class UserResolver {
 	async changePassword(
 		@Arg("token") token: string,
 		@Arg("newPassword") newPassword: string,
-		@Ctx() { redis }: MyContext
+		@Ctx() { redis, em }: MyContext
 	): Promise<UserResponse> {
 		if (newPassword.length <= 2) {
 			return {
@@ -56,6 +56,19 @@ export class UserResolver {
 				errors: [{ field: "token", message: "token expired" }],
 			};
 		}
+
+		const user = await em.findOne(User, { id: parseInt(userId) });
+
+		if (!user) {
+			return {
+				errors: [{ field: "token", message: "user no longer exists" }],
+			};
+		}
+
+		user.password = await argon2.hash(newPassword);
+		await em.persistAndFlush(user);
+
+		return { user };
 	}
 
 	@Mutation(() => Boolean)
