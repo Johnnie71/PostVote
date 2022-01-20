@@ -12,16 +12,16 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
 	return (
 		<Wrapper variant="small">
 			<Formik
-				initialValues={{ newPassword }}
+				initialValues={{ newPassword: "" }}
 				onSubmit={async (values, { setErrors }) => {
-					console.log(values);
-					const response = await login(values);
-					if (response.data?.login.errors) {
-						setErrors(toErrorMap(response.data.login.errors));
-					} else if (response.data?.login.user) {
-						// worked
-						router.push("/");
-					}
+					// console.log(values);
+					// const response = await login(values);
+					// if (response.data?.login.errors) {
+					// 	setErrors(toErrorMap(response.data.login.errors));
+					// } else if (response.data?.login.user) {
+					// 	// worked
+					// 	router.push("/");
+					// }
 				}}
 			>
 				{({ isSubmitting }) => (
