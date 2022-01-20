@@ -40,8 +40,23 @@ export class UserResolver {
 	async changePassword(
 		@Arg("token") token: string,
 		@Arg("newPassword") newPassword: string,
-		@Ctx() {}: MyContext
-	) {}
+		@Ctx() { redis }: MyContext
+	): Promise<UserResponse> {
+		if (newPassword.length <= 2) {
+			return {
+				errors: [
+					{ field: "newPassword", message: "length must be greater than 2" },
+				],
+			};
+		}
+
+		const userId = await redis.get(FORGET_PASSWORD_PREFIX + token);
+		if (!userId) {
+			return {
+				errors: [{ field: "token", message: "token expired" }],
+			};
+		}
+	}
 
 	@Mutation(() => Boolean)
 	async forgotPassword(
