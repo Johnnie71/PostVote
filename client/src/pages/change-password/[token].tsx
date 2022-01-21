@@ -65,4 +65,4 @@ ChangePassword.getInitialProps = ({ query }) => {
 	};
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: false })(ChangePassword);
+export default withUrqlClient(createUrqlClient)(ChangePassword);
