@@ -7,11 +7,11 @@ import { InputField } from "../../components/InputField";
 import { Wrapper } from "../../components/Wrapper";
 import { useChangePasswordMutation } from "../../generated/graphql";
 import { toErrorMap } from "../../utils/toErrorMap";
-import login from "../login";
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
 	const router = useRouter();
 	const [, changePassword] = useChangePasswordMutation();
+	const [tokenError, setTokenError] = useState();
 	return (
 		<Wrapper variant="small">
 			<Formik
@@ -22,7 +22,11 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
 						token,
 					});
 					if (response.data?.changePassword.errors) {
-						setErrors(toErrorMap(response.data.changePassword.errors));
+						const errorMap = toErrorMap(response.data.changePassword.errors);
+						if ("token" in errorMap) {
+							setTokenError(errorMap.token);
+						}
+						setErrors(errorMap);
 					} else if (response.data?.changePassword.user) {
 						// worked
 						router.push("/");
@@ -37,6 +41,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
 							label="New Password"
 							type="password"
 						/>
+						{tokenError ? <Box color="red">{tokenError}</Box> : null}
 						<Button
 							mt={4}
 							type="submit"
@@ -59,3 +64,6 @@ ChangePassword.getInitialProps = ({ query }) => {
 };
 
 export default ChangePassword;
+function useState(): [any, any] {
+	throw new Error("Function not implemented.");
+}
