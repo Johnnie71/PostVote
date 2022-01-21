@@ -1,11 +1,13 @@
 import { Box, Button } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
+import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../../components/InputField";
 import { Wrapper } from "../../components/Wrapper";
 import { useChangePasswordMutation } from "../../generated/graphql";
+import { createUrqlClient } from "../../utils/createUrqlClient";
 import { toErrorMap } from "../../utils/toErrorMap";
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
@@ -63,7 +65,4 @@ ChangePassword.getInitialProps = ({ query }) => {
 	};
 };
 
-export default ChangePassword;
-function useState(): [any, any] {
-	throw new Error("Function not implemented.");
-}
+export default withUrqlClient(createUrqlClient)(ChangePassword);
