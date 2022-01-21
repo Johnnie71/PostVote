@@ -50,7 +50,8 @@ export class UserResolver {
 			};
 		}
 
-		const userId = await redis.get(FORGET_PASSWORD_PREFIX + token);
+		const key = FORGET_PASSWORD_PREFIX + token;
+		const userId = await redis.get(key);
 		if (!userId) {
 			return {
 				errors: [{ field: "token", message: "token expired" }],
@@ -67,6 +68,8 @@ export class UserResolver {
 
 		user.password = await argon2.hash(newPassword);
 		await em.persistAndFlush(user);
+
+		await redis.del(key); // deleting token from redis so it cant change the password using the same token
 
 		// log in user after changed password
 		req.session.userId = user.id;
