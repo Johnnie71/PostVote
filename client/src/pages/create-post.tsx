@@ -7,18 +7,11 @@ import { useRouter } from "next/router";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import Layout from "../components/Layout";
+import useIsAuth from "../utils/useIsAuth";
 
 const CreatePost: React.FC<{}> = ({}) => {
-	const [{ data, fetching }] = useMeQuery(); // to check whether they are logged in or not
 	const router = useRouter();
-
-	useEffect(() => {
-		if (!fetching && !data?.me) {
-			// if it's not loading and there is no user
-			router.replace("/login");
-		}
-	}, [fetching, data, router]);
-
+	useIsAuth(); // checking if logged in and redirecting to login if they are not
 	const [, createPost] = useCreatePostMutation();
 	return (
 		<Layout variant="small">
