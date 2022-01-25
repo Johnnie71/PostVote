@@ -18,6 +18,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 	if (fetching) {
 		body = null;
 	} else if (!data?.me) {
+		// user not logged in
 		body = (
 			<>
 				<NextLink href={"/login"}>
@@ -30,8 +31,8 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 				</NextLink>
 			</>
 		);
-		// user not logged in
 	} else {
+		// user is logged in
 		body = (
 			<Flex>
 				<Box mr={2}>{data.me.username}</Box>
@@ -46,11 +47,10 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 				</Button>
 			</Flex>
 		);
-		// user is logged in
 	}
 
 	return (
-		<Flex bg="tan" p={4} ml={"auto"}>
+		<Flex zIndex={1} position="sticky" top={0} bg="tan" p={4} ml={"auto"}>
 			<Box ml={"auto"}>{body}</Box>
 		</Flex>
 	);
