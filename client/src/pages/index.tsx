@@ -9,11 +9,9 @@ const Index = () => {
 		<div>
 			<NavBar />
 			<div>Hello World!</div>
-			<br />
+
 			{data ? (
-				data.posts.map((post) => {
-					<div key={post.id}>{post.text}</div>;
-				})
+				data.posts.map((post) => <div key={post.id}>{post.title}</div>)
 			) : (
 				<div>Loading.....</div>
 			)}
