@@ -11,12 +11,14 @@ import Layout from "../components/Layout";
 const CreatePost: React.FC<{}> = ({}) => {
 	const [{ data, fetching }] = useMeQuery(); // to check whether they are logged in or not
 	const router = useRouter();
+
 	useEffect(() => {
 		if (!fetching && !data?.me) {
 			// if it's not loading and there is no user
 			router.replace("/login");
 		}
 	}, [fetching, data, router]);
+
 	const [, createPost] = useCreatePostMutation();
 	return (
 		<Layout variant="small">
