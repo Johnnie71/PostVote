@@ -68,10 +68,4 @@ const ChangePassword: NextPage<{ token: string }> = () => {
 	);
 };
 
-ChangePassword.getInitialProps = ({ query }) => {
-	return {
-		token: query.token as string,
-	};
-};
-
 export default withUrqlClient(createUrqlClient)(ChangePassword);
