@@ -292,7 +292,7 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 };
 export const PostsDocument = gql`
     query Posts($limit: Int!, $cursor: String) {
-  posts(cursor: $cursor, limit: $limit) {
+  posts(limit: $limit, cursor: $cursor) {
     id
     createdAt
     updatedAt
