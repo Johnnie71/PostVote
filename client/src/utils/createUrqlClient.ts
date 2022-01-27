@@ -38,9 +38,14 @@ const cursorPagination = (): Resolver => {
 		}
 
 		//from the query get posts
+		const results: string[] = [];
 		fieldInfos.forEach((fi) => {
-			cache.resolve(entityKey, fi.fieldKey);
+			const data = cache.resolve(entityKey, fi.fieldKey) as string[];
+			console.log(data);
+			results.push(...data);
 		});
+
+		return results;
 
 		// const visited = new Set();
 		// let result: NullArray<string> = [];
