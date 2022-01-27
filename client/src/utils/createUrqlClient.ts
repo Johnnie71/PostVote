@@ -41,7 +41,6 @@ const cursorPagination = (): Resolver => {
 		const results: string[] = [];
 		fieldInfos.forEach((fi) => {
 			const data = cache.resolve(entityKey, fi.fieldKey) as string[];
-			console.log(data);
 			results.push(...data);
 		});
 
