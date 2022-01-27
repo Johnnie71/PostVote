@@ -14,11 +14,15 @@ import {
 import NextLink from "next/link";
 
 const Index = () => {
-	const [{ data }] = usePostsQuery({
+	const [{ data, fetching }] = usePostsQuery({
 		variables: {
 			limit: 10,
 		},
 	});
+
+	if (!fetching && !data) {
+		return <div>Refresh page</div>;
+	}
 	return (
 		<Layout>
 			<Flex align="center">
@@ -28,11 +32,11 @@ const Index = () => {
 				</NextLink>
 			</Flex>
 			<br />
-			{!data ? (
+			{!data && fetching ? (
 				<div>loading.....</div>
 			) : (
 				<Stack>
-					{data.posts.map((post) => (
+					{data!.posts.map((post) => (
 						<Box key={post.id} p={5} shadow="md" borderWidth="1px">
 							<Heading fontSize="xl">{post.title}</Heading>
 							<Text mt={4}>{post.textSnippet}....</Text>
@@ -40,11 +44,13 @@ const Index = () => {
 					))}
 				</Stack>
 			)}
-			<Flex>
-				<Button colorScheme="cyan" m="auto" my={4}>
-					load more
-				</Button>
-			</Flex>
+			{data ? (
+				<Flex>
+					<Button isLoading={fetching} colorScheme="cyan" m="auto" my={4}>
+						load more
+					</Button>
+				</Flex>
+			) : null}
 		</Layout>
 	);
 };
