@@ -1,6 +1,6 @@
 import { betterUpdateQuery } from "../pages/betterUpdateQuery";
 import { cacheExchange, Resolver } from "@urql/exchange-graphcache";
-import { dedupExchange, fetchExchange } from "urql";
+import { dedupExchange, fetchExchange, stringifyVariables } from "urql";
 import { Exchange } from "urql";
 import { pipe, tap } from "wonka";
 import {
@@ -37,6 +37,9 @@ const cursorPagination = (): Resolver => {
 			return undefined;
 		}
 
+		const fieldKey = `${fieldName}(${stringifyVariables(fieldArgs)})`;
+		const isItInTheCache = cache.resolve(entityKey, fieldKey);
+		info.partial = !isItInTheCache;
 		//from the query get posts
 		const results: string[] = [];
 		fieldInfos.forEach((fi) => {
