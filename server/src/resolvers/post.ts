@@ -29,6 +29,7 @@ class PostInput {
 class PaginatedPosts {
 	@Field(() => [Post])
 	posts: Post[];
+	@Field()
 	hasMore: boolean;
 }
 
