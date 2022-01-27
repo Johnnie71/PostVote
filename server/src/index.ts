@@ -25,7 +25,10 @@ const main = async () => {
 		migrations: [path.join(__dirname, "./migrations/*")],
 		entities: [Post, User],
 	});
+
 	await conn.runMigrations(); // going to run migrations that not have been run
+
+	// await Post.delete({});
 
 	const app = express();
 
