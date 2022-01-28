@@ -16,7 +16,7 @@ import {
 import { MyContext } from "./types";
 import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
-import { Upvote } from "src/entities/Upvote";
+import { Upvote } from "../entities/Upvote";
 
 @InputType()
 class PostInput {
@@ -59,9 +59,9 @@ export class PostResolver {
 
 		await getConnection().query(
 			`
-			UPDATE post p
-			SET p.points = p.points + $1
-			WHERE p.id = $2
+			UPDATE post
+			SET points = points + $1
+			WHERE id = $2
 		`,
 			[realValue, postId]
 		);

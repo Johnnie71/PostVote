@@ -15,6 +15,7 @@ import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { User } from "./entities/User";
 import path from "path";
+import { Upvote } from "./entities/Upvote";
 
 const main = async () => {
 	const conn = await createConnection({
@@ -23,7 +24,7 @@ const main = async () => {
 		logging: true,
 		synchronize: true,
 		migrations: [path.join(__dirname, "./migrations/*")],
-		entities: [Post, User],
+		entities: [Post, User, Upvote],
 	});
 
 	await conn.runMigrations(); // going to run migrations that not have been run
