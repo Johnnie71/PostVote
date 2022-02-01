@@ -7,7 +7,6 @@ import {
 	Button,
 	Flex,
 	Heading,
-	IconButton,
 	Link,
 	Stack,
 	Text,
