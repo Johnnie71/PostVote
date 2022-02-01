@@ -7,13 +7,14 @@ import {
 	Button,
 	Flex,
 	Heading,
+	IconButton,
 	Link,
 	Stack,
 	Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon, Icon } from "@chakra-ui/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -48,9 +49,9 @@ const Index = () => {
 								alignItems="center"
 								mr={4}
 							>
-								<ChevronDownIcon w={6} h={6} />
+								<IconButton aria-label="up vote" icon={<ChevronDownIcon />} />
 								{post.points}
-								<ChevronUpIcon w={6} h={6} />
+								<IconButton aria-label="down vote" icon={<ChevronUpIcon />} />
 							</Flex>
 							<Box>
 								<Heading fontSize="xl">{post.title}</Heading>
