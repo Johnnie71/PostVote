@@ -48,8 +48,8 @@ export class PostResolver {
 		@Arg("value", () => Int) value: number,
 		@Ctx() { req }: MyContext
 	) {
-		const isUpvote = value !== -1;
-		const realValue = isUpvote ? 1 : -1;
+		const isVoting = value !== -1;
+		const realValue = isVoting ? 1 : -1;
 		const { userId } = req.session;
 		// await Upvote.insert({
 		// 	userId,
