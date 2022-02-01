@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import VotingSection from "../components/VotingSection";
 
 const Index = () => {
