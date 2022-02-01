@@ -15,6 +15,7 @@ import {
 import NextLink from "next/link";
 import { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import VotingSection from "../components/VotingSection";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -43,16 +44,7 @@ const Index = () => {
 				<Stack>
 					{data!.posts.posts.map((post) => (
 						<Flex key={post.id} p={5} shadow="md" borderWidth="1px">
-							<Flex
-								direction="column"
-								justifyContent="center"
-								alignItems="center"
-								mr={4}
-							>
-								<IconButton aria-label="up vote" icon={<ChevronDownIcon />} />
-								{post.points}
-								<IconButton aria-label="down vote" icon={<ChevronUpIcon />} />
-							</Flex>
+							<VotingSection post={post} />
 							<Box>
 								<Heading fontSize="xl">{post.title}</Heading>
 								<Text>posted by {post.creator.username}</Text>
