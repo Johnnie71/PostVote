@@ -155,7 +155,6 @@ export class PostResolver {
 		// }
 
 		// const posts = await quiryBuiler.getMany();
-		console.log("posts: ", posts);
 		return {
 			posts: posts.slice(0, realLimit),
 			hasMore: posts.length === realLimitPlusOne,
