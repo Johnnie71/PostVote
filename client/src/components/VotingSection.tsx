@@ -26,7 +26,7 @@ const VotingSection: React.FC<UpVoteSectionProps> = ({ post }) => {
 				}}
 				isLoading={loadingState === "upvote-loading"}
 				aria-label="up vote"
-				icon={<ChevronDownIcon />}
+				icon={<ChevronUpIcon />}
 			/>
 			{post.points}
 			<IconButton
@@ -40,7 +40,7 @@ const VotingSection: React.FC<UpVoteSectionProps> = ({ post }) => {
 				}}
 				isLoading={loadingState === "downvote-loading"}
 				aria-label="down vote"
-				icon={<ChevronUpIcon />}
+				icon={<ChevronDownIcon />}
 			/>
 		</Flex>
 	);
