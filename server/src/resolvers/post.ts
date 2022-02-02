@@ -48,29 +48,54 @@ export class PostResolver {
 		@Arg("value", () => Int) value: number,
 		@Ctx() { req }: MyContext
 	) {
-		const isVoting = value !== -1;
-		const realValue = isVoting ? 1 : -1;
+		const _isVoting = value !== -1;
+		const realValue = _isVoting ? 1 : -1;
 		const { userId } = req.session;
-		// await Upvote.insert({
-		// 	userId,
-		// 	postId,
-		// 	value: realValue,
-		// });
+		const findVote = await Upvote.findOne({ where: { postId, userId } });
 
-		await getConnection().query(
-			`
-			START TRANSACTION;
+		// user has voted on post before
+		// and they are changing their vote
+		if (findVote && findVote.value !== realValue) {
+			await getConnection().transaction(async (tm) => {
+				await tm.query(
+					`
+					UPDATE upvote
+					SET VALUE = $1
+					WHERE "postId" = $2 AND "userId" = $3
+				`,
+					[realValue, postId, userId]
+				);
 
-			INSERT INTO upvote ("userId", "postId", value)
-			VALUES (${userId},${postId},${realValue});
+				await tm.query(
+					`
+					UPDATE post
+					SET points = points + $1
+					WHERE id = $2
+				`,
+					[2 * realValue, postId]
+				);
+			});
+		} else if (!findVote) {
+			// has never voted before
+			await getConnection().transaction(async (tm) => {
+				await tm.query(
+					`
+					INSERT INTO upvote ("userId", "postId", value)
+					VALUES ($1, $2, $3);
+				`,
+					[userId, postId, realValue]
+				);
 
-			UPDATE post
-			SET points = points + ${realValue}
-			WHERE id = ${postId};
-
-			COMMIT;
-		`
-		);
+				await tm.query(
+					`
+					UPDATE post
+					SET points = points + $1
+					WHERE id = $2;
+				`,
+					[realValue, postId]
+				);
+			});
+		}
 
 		return true;
 	}
