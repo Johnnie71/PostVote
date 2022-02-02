@@ -32,6 +32,9 @@ export class Post extends BaseEntity {
 	points!: number;
 
 	@Field()
+	voteStatus: number | null;
+
+	@Field()
 	@Column()
 	creatorId: number;
 
