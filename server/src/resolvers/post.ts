@@ -200,6 +200,7 @@ export class PostResolver {
 	}
 
 	@Mutation(() => Boolean)
+	@UseMiddleware(isAuth)
 	async deletePost(@Arg("id") id: number): Promise<boolean> {
 		await Post.delete(id);
 		return true;
