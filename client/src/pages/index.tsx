@@ -29,7 +29,6 @@ const Index = () => {
 	}
 	return (
 		<Layout>
-			<br />
 			{!data && fetching ? (
 				<div>loading.....</div>
 			) : (
