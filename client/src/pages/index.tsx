@@ -37,32 +37,34 @@ const Index = () => {
 				<div>loading.....</div>
 			) : (
 				<Stack>
-					{data!.posts.posts.map((post) => (
-						<Flex key={post.id} p={5} shadow="md" borderWidth="1px">
-							<VotingSection post={post} />
-							<Box flex={1}>
-								<NextLink href="/post/[id]" as={`/post/${post.id}`}>
-									<Link>
-										<Heading fontSize="xl">{post.title}</Heading>
-									</Link>
-								</NextLink>
-								<Text>posted by {post.creator.username}</Text>
-								<Flex align="center">
-									<Text flex={1} mt={4}>
-										{post.textSnippet}....
-									</Text>
-									<IconButton
-										colorScheme="red"
-										aria-label="delete post"
-										icon={<DeleteIcon />}
-										onClick={() => {
-											deletePost({ id: post.id });
-										}}
-									/>
-								</Flex>
-							</Box>
-						</Flex>
-					))}
+					{data!.posts.posts.map((post) =>
+						!post ? null : (
+							<Flex key={post.id} p={5} shadow="md" borderWidth="1px">
+								<VotingSection post={post} />
+								<Box flex={1}>
+									<NextLink href="/post/[id]" as={`/post/${post.id}`}>
+										<Link>
+											<Heading fontSize="xl">{post.title}</Heading>
+										</Link>
+									</NextLink>
+									<Text>posted by {post.creator.username}</Text>
+									<Flex align="center">
+										<Text flex={1} mt={4}>
+											{post.textSnippet}....
+										</Text>
+										<IconButton
+											colorScheme="red"
+											aria-label="delete post"
+											icon={<DeleteIcon />}
+											onClick={() => {
+												deletePost({ id: post.id });
+											}}
+										/>
+									</Flex>
+								</Box>
+							</Flex>
+						)
+					)}
 				</Stack>
 			)}
 			{data && data.posts.hasMore ? (
