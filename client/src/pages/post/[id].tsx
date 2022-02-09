@@ -29,14 +29,18 @@ const Post = () => {
 		return <div>{error.message}</div>;
 	}
 
-	if (!data) {
-		<Box>could not find post</Box>;
+	if (!data?.post) {
+		return (
+			<Layout>
+				<Box>could not find post</Box>
+			</Layout>
+		);
 	}
 
 	return (
 		<Layout>
-			<Heading>{data?.post?.title}</Heading>
-			{data?.post?.text}
+			<Heading mb={4}>{data.post.title}</Heading>
+			{data.post.text}
 		</Layout>
 	);
 };
