@@ -35,6 +35,9 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
 		// user is logged in
 		body = (
 			<Flex>
+				<NextLink href="create-post">
+					<Link mr={2}>create post</Link>
+				</NextLink>
 				<Box mr={2}>{data.me.username}</Box>
 				<Button
 					onClick={() => {
