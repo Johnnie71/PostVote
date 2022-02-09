@@ -217,6 +217,8 @@ export class PostResolver {
 
 		// await Upvote.delete({ postId: id });
 		// await Post.delete({ id });
+
+		await Post.delete({ id, creatorId: req.session.userId });
 		return true;
 	}
 }
