@@ -7,6 +7,7 @@ import {
 	Button,
 	Flex,
 	Heading,
+	IconButton,
 	Link,
 	Stack,
 	Text,
@@ -14,6 +15,7 @@ import {
 import NextLink from "next/link";
 import { useState } from "react";
 import VotingSection from "../components/VotingSection";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -36,14 +38,24 @@ const Index = () => {
 					{data!.posts.posts.map((post) => (
 						<Flex key={post.id} p={5} shadow="md" borderWidth="1px">
 							<VotingSection post={post} />
-							<Box>
+							<Box flex={1}>
 								<NextLink href="/post/[id]" as={`/post/${post.id}`}>
 									<Link>
 										<Heading fontSize="xl">{post.title}</Heading>
 									</Link>
 								</NextLink>
 								<Text>posted by {post.creator.username}</Text>
-								<Text mt={4}>{post.textSnippet}....</Text>
+								<Flex align="center">
+									<Text flex={1} mt={4}>
+										{post.textSnippet}....
+									</Text>
+									<IconButton
+										colorScheme="red"
+										aria-label="delete post"
+										icon={<DeleteIcon />}
+										onClick={() => {}}
+									/>
+								</Flex>
 							</Box>
 						</Flex>
 					))}
