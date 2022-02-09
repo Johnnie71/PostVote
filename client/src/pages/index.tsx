@@ -1,5 +1,5 @@
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { usePostsQuery } from "../generated/graphql";
+import { useDeletePostMutation, usePostsQuery } from "../generated/graphql";
 import { withUrqlClient } from "next-urql";
 import Layout from "../components/Layout";
 import {
@@ -25,6 +25,8 @@ const Index = () => {
 	const [{ data, fetching }] = usePostsQuery({
 		variables,
 	});
+
+	const [, deletePost] = useDeletePostMutation();
 
 	if (!fetching && !data) {
 		return <div>Refresh page</div>;
@@ -53,7 +55,9 @@ const Index = () => {
 										colorScheme="red"
 										aria-label="delete post"
 										icon={<DeleteIcon />}
-										onClick={() => {}}
+										onClick={() => {
+											deletePost({ id: post.id });
+										}}
 									/>
 								</Flex>
 							</Box>
