@@ -1,27 +1,20 @@
-import { createUrqlClient } from "../utils/createUrqlClient";
-import {
-	useDeletePostMutation,
-	useMeQuery,
-	usePostsQuery,
-	useUpdatePostMutation,
-} from "../generated/graphql";
-import { withUrqlClient } from "next-urql";
-import Layout from "../components/Layout";
 import {
 	Box,
 	Button,
 	Flex,
 	Heading,
-	IconButton,
 	Link,
 	Stack,
 	Text,
 } from "@chakra-ui/react";
+import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
 import { useState } from "react";
-import VotingSection from "../components/VotingSection";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import EditDeletePostButtons from "../components/EditDeletePostButtons";
+import Layout from "../components/Layout";
+import VotingSection from "../components/VotingSection";
+import { useMeQuery, usePostsQuery } from "../generated/graphql";
+import { createUrqlClient } from "../utils/createUrqlClient";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -34,8 +27,6 @@ const Index = () => {
 	const [{ data, fetching }] = usePostsQuery({
 		variables,
 	});
-
-	const [, deletePost] = useDeletePostMutation();
 
 	if (!fetching && !data) {
 		return <div>Refresh page</div>;
