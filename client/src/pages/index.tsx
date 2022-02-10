@@ -35,7 +35,6 @@ const Index = () => {
 	});
 
 	const [, deletePost] = useDeletePostMutation();
-	const [, updatePost] = useUpdatePostMutation();
 
 	if (!fetching && !data) {
 		return <div>Refresh page</div>;
