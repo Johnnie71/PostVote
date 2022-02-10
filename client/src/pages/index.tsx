@@ -22,8 +22,6 @@ const Index = () => {
 		cursor: null as null | string,
 	});
 
-	const [{ data: meData }] = useMeQuery();
-
 	const [{ data, fetching }] = usePostsQuery({
 		variables,
 	});
