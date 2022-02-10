@@ -17,6 +17,7 @@ import { MyContext } from "./types";
 import { isAuth } from "../middleware/isAuth";
 import { getConnection } from "typeorm";
 import { Upvote } from "../entities/Upvote";
+import { User } from "../entities/User";
 
 @InputType()
 class PostInput {
@@ -37,8 +38,13 @@ class PaginatedPosts {
 @Resolver(Post)
 export class PostResolver {
 	@FieldResolver(() => String)
-	textSnippet(@Root() root: Post) {
-		return root.text.slice(0, 50);
+	textSnippet(@Root() post: Post) {
+		return post.text.slice(0, 50);
+	}
+
+	@FieldResolver(() => User)
+	creator(@Root() post: Post) {
+		return User.findOne(post.creatorId);
 	}
 
 	@Mutation(() => Boolean)
@@ -124,21 +130,13 @@ export class PostResolver {
 
 		const posts = await getConnection().query(
 			`
-			SELECT p.*, 
-			json_build_object(
-				'id', u.id,
-				'username', u.username,
-				'email', u.email,
-				'createdAt', u."createdAt",
-				'updatedAt', u."updatedAt"
-				) creator,
+			SELECT p.*,
 			${
 				req.session.userId
 					? '(SELECT VALUE FROM upvote WHERE "userId" = $2 AND "postId" = p.id) "voteStatus"'
 					: 'null as "voteStatus"'
 			}	
 			FROM post p
-			INNER JOIN public.user u on u.id = p."creatorId"
 			${cursor ? `WHERE p."createdAt" < $${cursorIdx}` : ""}
 			ORDER BY p."createdAt" 
 			DESC 
@@ -169,7 +167,7 @@ export class PostResolver {
 
 	@Query(() => Post, { nullable: true })
 	post(@Arg("id", () => Int) id: number): Promise<Post | undefined> {
-		return Post.findOne(id, { relations: ["creator"] });
+		return Post.findOne(id);
 	}
 
 	@Mutation(() => Post)
