@@ -52,11 +52,12 @@ const Index = () => {
 										<Text flex={1} mt={4}>
 											{post.textSnippet}....
 										</Text>
-										{meData?.me?.id === post.creator.id ? (
-											<Box ml="auto">
-												<EditDeletePostButtons id={post.id} />
-											</Box>
-										) : null}
+										<Box ml="auto">
+											<EditDeletePostButtons
+												id={post.id}
+												creatorId={post.creator.id}
+											/>
+										</Box>
 									</Flex>
 								</Box>
 							</Flex>
