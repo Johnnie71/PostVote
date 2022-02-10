@@ -1,6 +1,7 @@
 import { createUrqlClient } from "../utils/createUrqlClient";
 import {
 	useDeletePostMutation,
+	useMeQuery,
 	usePostsQuery,
 	useUpdatePostMutation,
 } from "../generated/graphql";
@@ -26,6 +27,9 @@ const Index = () => {
 		limit: 15,
 		cursor: null as null | string,
 	});
+
+	const [{ data: meData }] = useMeQuery();
+
 	const [{ data, fetching }] = usePostsQuery({
 		variables,
 	});
@@ -57,28 +61,30 @@ const Index = () => {
 										<Text flex={1} mt={4}>
 											{post.textSnippet}....
 										</Text>
-										<Box ml="auto">
-											<NextLink
-												href="/post/edit/[id]"
-												as={`/post/edit/${post.id}`}
-											>
+										{meData?.me?.id === post.creator.id ? (
+											<Box ml="auto">
+												<NextLink
+													href="/post/edit/[id]"
+													as={`/post/edit/${post.id}`}
+												>
+													<IconButton
+														colorScheme="yellow"
+														aria-label="Update Post"
+														icon={<EditIcon />}
+														as={Link}
+													/>
+												</NextLink>
 												<IconButton
-													colorScheme="yellow"
-													aria-label="Update Post"
-													icon={<EditIcon />}
-													as={Link}
+													ml={3}
+													colorScheme="red"
+													aria-label="Delete Post"
+													icon={<DeleteIcon />}
+													onClick={() => {
+														deletePost({ id: post.id });
+													}}
 												/>
-											</NextLink>
-											<IconButton
-												ml={3}
-												colorScheme="red"
-												aria-label="Delete Post"
-												icon={<DeleteIcon />}
-												onClick={() => {
-													deletePost({ id: post.id });
-												}}
-											/>
-										</Box>
+											</Box>
+										) : null}
 									</Flex>
 								</Box>
 							</Flex>
