@@ -21,6 +21,7 @@ import NextLink from "next/link";
 import { useState } from "react";
 import VotingSection from "../components/VotingSection";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import EditDeletePostButtons from "../components/EditDeletePostButtons";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -62,26 +63,7 @@ const Index = () => {
 										</Text>
 										{meData?.me?.id === post.creator.id ? (
 											<Box ml="auto">
-												<NextLink
-													href="/post/edit/[id]"
-													as={`/post/edit/${post.id}`}
-												>
-													<IconButton
-														colorScheme="yellow"
-														aria-label="Update Post"
-														icon={<EditIcon />}
-														as={Link}
-													/>
-												</NextLink>
-												<IconButton
-													ml={3}
-													colorScheme="red"
-													aria-label="Delete Post"
-													icon={<DeleteIcon />}
-													onClick={() => {
-														deletePost({ id: post.id });
-													}}
-												/>
+												<EditDeletePostButtons id={post.id} />
 											</Box>
 										) : null}
 									</Flex>
